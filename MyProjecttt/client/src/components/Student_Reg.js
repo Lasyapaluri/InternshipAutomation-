@@ -20,7 +20,7 @@ function Student_Reg() {
     console.log(newstudent)
     let res=await axios.post('http://localhost:4000/student_api/register',newstudent)
     console.log(res)
-    if(res.data.message=='Studnet created')
+    if(res.data.message==='Studnet created')
     {
       console.log("this is trying to navigate")
       navigate('/Student_Login')
@@ -51,7 +51,7 @@ function Student_Reg() {
         <div className="col-md-8 col-lg-6">
           <div className="card shadow p-4" style={{ background: '#f8f9fa' }}>
             <h2 className="text-center mb-4">Student Registration</h2>
-            {err.length!=0 && <p className='text-danger fs-3'>{err}</p>}
+            {err.length!==0 && <p className='text-danger fs-3'>{err}</p>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="studentName" className="form-label">Student Name:</label>

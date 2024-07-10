@@ -14,7 +14,7 @@ function Student_login() {
     console.log(stdCred)
     let res=await axios.post('http://localhost:4000/student_api/login',stdCred)
     console.log(res)
-    if(res.data.message="login successful")
+    if(res.data.message==="login successful")
       {
         console.log("success")
         navigate('/Student_Dashboard')
@@ -35,7 +35,7 @@ function Student_login() {
         <div className="col-md-6">
           <div className="card shadow p-4" style={{ background: '#f8f9fa' }}>
             <h2 className="text-center mb-4">Student Login</h2>
-            {err.length!=0 && <p className='text-danger fs-3'>{err}</p>}
+            {err.length!==0 && <p className='text-danger fs-3'>{err}</p>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">Username:</label>
