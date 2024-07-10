@@ -33,7 +33,7 @@ function Faculty_Reg() {
     // You can add further logic here for form submission
     let res=await axios.post('http://localhost:4000/faculty_api/register',formData)
     console.log(res)
-    if(res.data.message=='created')
+    if(res.data.message=='Faculty created')
     {
       console.log("this is trying to navigate")
       navigate('/Faculty_Login')

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 function Student_Reg() {
   const [studentName, setStudentName] = useState('');
   const [rollNo, setRollNo] = useState('');
@@ -11,39 +11,31 @@ function Student_Reg() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  let [err,setError]=useState('')
-  let navigate=useNavigate() 
-  const handleSubmit = async(event) => {
+  const [err, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const newstudent= { studentName, rollNo, section, branch, phoneNo, email, username, password };
-    console.log(newstudent)
-    let res=await axios.post('http://localhost:4000/student_api/register',newstudent)
-    console.log(res)
-    if(res.data.message=='Studnet created')
-    {
-      console.log("this is trying to navigate")
-      navigate('/Student_Login')
+  
+    const newstudent = { studentName, rollNo, section, branch, phoneNo, email, username, password };
+    console.log(newstudent);
+  
+    try {
+      const res = await axios.post('http://localhost:4000/student_api/register', newstudent);
+      console.log(res);
+  
+      if (res.data.message === 'Student created') {
+        console.log("this is trying to navigate");
+        navigate('/Student_Login');
+      } else {
+        setError(res.data.message);
+      }
+    } catch (error) {
+      console.error('There was an error!', error);
+      setError('Network error: Unable to reach the server');
     }
-    else{
-        setError(res.data.message)
-    }
-    // Reset form fields if needed
-    // setStudentName('');
-    // setRollNo('');
-    // setSection('');
-    // setBranch('');
-    // setPhoneNo('');
-    // setEmail('');
-    // setUsername('');
-    // setPassword('');
-    // setImage(null);
   };
-
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setImage(file);
-  // };
+  
 
   return (
     <div className="container mt-5">
@@ -51,7 +43,7 @@ function Student_Reg() {
         <div className="col-md-8 col-lg-6">
           <div className="card shadow p-4" style={{ background: '#f8f9fa' }}>
             <h2 className="text-center mb-4">Student Registration</h2>
-            {err.length!=0 && <p className='text-danger fs-3'>{err}</p>}
+            {err.length !== 0 && <p className='text-danger fs-3'>{err}</p>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="studentName" className="form-label">Student Name:</label>
