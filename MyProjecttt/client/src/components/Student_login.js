@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { StudUsername } from './contexts/CredContext';
 function Student_login() {
+  //Student Context
+  let [studusername,setStdUsername]=useContext(StudUsername)
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [err, setError] = useState('');
@@ -19,6 +21,7 @@ function Student_login() {
 
       if (res.data.message === "login successful") {
         console.log("Login successful");
+        setStdUsername(username)
         navigate('/Student_Dashboard');
       } else {
         setError(res.data.message);
