@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
-import '../components/CSS/styles.css'; // Assume you have a separate CSS file for styling
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function FacultyDashboard() {
-  const [internships, setInternships] = useState([
-    // Your internship data remains unchanged
-  ]);
-
+  const [internships, setInternships] = useState([]);
   const [filter, setFilter] = useState({
     name: '',
     company: '',
@@ -16,145 +13,161 @@ function FacultyDashboard() {
     location: ''
   });
 
+  useEffect(() => {
+    fetchInternships();
+  }, []);
+
+  const fetchInternships = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/faculty_api/internships');
+      setInternships(response.data);
+    } catch (error) {
+      console.error('Error fetching internships:', error);
+    }
+  };
+
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
-    setFilter((prevFilter) => ({...prevFilter, [name]: value }));
+    setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
 
-  const handleSearch = () => {
-    // You can add additional logic here to handle the search functionality
-    console.log('Search button clicked!');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:4000/faculty_api/internships', filter);
+      setInternships(response.data);
+    } catch (error) {
+      console.error('Error searching internships:', error);
+    }
   };
-
-  const filteredInternships = internships.filter((internship) => {
-    const {
-      name,
-      company,
-      stipend,
-      branch,
-      year,
-      section,
-      location
-    } = filter;
-
-    if (name &&!internship.name.toLowerCase().includes(name.toLowerCase())) return false;
-    if (company &&!internship.company.toLowerCase().includes(company.toLowerCase())) return false;
-    if (stipend && internship.stipend < parseInt(stipend)) return false;
-    if (branch && internship.branch!== branch) return false;
-    if (year && internship.year!== year) return false;
-    if (section && internship.section!== section) return false;
-    if (location &&!internship.location.toLowerCase().includes(location.toLowerCase())) return false;
-
-    return true;
-  });
 
   return (
     <div className="container">
       <div className="display-3 fw-bold text-center mt-2 mb-2">Faculty Dashboard</div>
-      <div className="filter-container small-filter">
+      <div className="filter-container w-75 m-auto mt-5 shadow p-5 border border-dark fw-bold">
         <h4>Filter Internships</h4>
-        <form>
-          <div className="filter-group">
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={filter.name}
-              onChange={handleFilterChange}
-              placeholder="Search by name"
-              className="form-control small-input"
-            />
+        <form onSubmit={handleSubmit}>
+          <div className="row g-3">
+            <div className="col-md-4">
+              <label className="form-label">Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={filter.name}
+                onChange={handleFilterChange}
+                className="form-control"
+                placeholder="Search by name"
+              />
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Company:</label>
+              <input
+                type="text"
+                name="company"
+                value={filter.company}
+                onChange={handleFilterChange}
+                className="form-control"
+                placeholder="Search by company"
+              />
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Stipend:</label>
+              <input
+                type="number"
+                name="stipend"
+                value={filter.stipend}
+                onChange={handleFilterChange}
+                className="form-control"
+                placeholder="Search by stipend"
+              />
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Branch:</label>
+              <select
+                name="branch"
+                value={filter.branch}
+                onChange={handleFilterChange}
+                className="form-select"
+              >
+                <option value="">Select branch</option>
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+                <option value="ECE">ECE</option>
+              </select>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Year:</label>
+              <select
+                name="year"
+                value={filter.year}
+                onChange={handleFilterChange}
+                className="form-select"
+              >
+                <option value="">Select year</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+              </select>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Section:</label>
+              <select
+                name="section"
+                value={filter.section}
+                onChange={handleFilterChange}
+                className="form-select"
+              >
+                <option value="">Select section</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Location:</label>
+              <input
+                type="text"
+                name="location"
+                value={filter.location}
+                onChange={handleFilterChange}
+                className="form-control"
+                placeholder="Search by location"
+              />
+            </div>
           </div>
-          <div className="filter-group">
-            <label>Company:</label>
-            <input
-              type="text"
-              name="company"
-              value={filter.company}
-              onChange={handleFilterChange}
-              placeholder="Search by company"
-              className="form-control small-input"
-            />
-          </div>
-          <div className="filter-group">
-            <label>Stipend:</label>
-            <input
-              type="number"
-              name="stipend"
-              value={filter.stipend}
-              onChange={handleFilterChange}
-              placeholder="Search by stipend"
-              className="form-control small-input"
-            />
-          </div>
-          <div className="filter-group">
-            <label>Branch:</label>
-            <select
-              name="branch"
-              value={filter.branch}
-              onChange={handleFilterChange}
-              className="form-control small-input"
-            >
-              <option value="">Select branch</option>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
-              <option value="ECE">ECE</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label>Year:</label>
-            <select
-              name="year"
-              value={filter.year}
-              onChange={handleFilterChange}
-              className="form-control small-input"
-            >
-              <option value="">Select year</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label>Section:</label>
-            <select
-              name="section"
-              value={filter.section}
-              onChange={handleFilterChange}
-              className="form-control small-input"
-            >
-              <option value="">Select section</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label>Location:</label>
-            <input
-              type="text"
-              name="location"
-              value={filter.location}
-              onChange={handleFilterChange}
-              placeholder="Search by location"
-              className="form-control small-input"
-            />
-          </div>
-          <button type="button" onClick={handleSearch} className="btn btn-primary small-btn mt-2">
+          <button type="submit" className="btn btn-primary mt-3">
             Search
           </button>
         </form>
       </div>
-      <div className="internship-list">
-        {filteredInternships.map((internship) => (
-          <div key={internship.id} className="internship-card">
-            <h5>{internship.name}</h5>
-            <p>Company: {internship.company}</p>
-            <p>Stipend: {internship.stipend}</p>
-            <p>Branch: {internship.branch}</p>
-            <p>Year: {internship.year}</p>
-            <p>Section: {internship.section}</p>
-            <p>Location: {internship.location}</p>
-          </div>
-        ))}
+      <div className="mt-5">
+        <h4 className="text-center">Filtered Internships</h4>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Stipend</th>
+                <th>Branch</th>
+                <th>Year</th>
+                <th>Section</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {internships.map((internship) => (
+                <tr key={internship._id}>
+                  <td>{internship.Name}</td>
+                  <td>{internship['Internship Offered Company Name']}</td>
+                  <td>{internship['Monthly Stipend']}</td>
+                  <td>{internship.Branch}</td>
+                  <td>{internship.Year}</td>
+                  <td>{internship.Section}</td>
+                  <td>{internship['Internship Offered Company Address']}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
