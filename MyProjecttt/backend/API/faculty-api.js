@@ -73,7 +73,7 @@ facultyApp.get('/internships', async (req, res) => {
         filter['Internship Offered Company Name'] = { $regex: new RegExp(req.body.company, 'i') };
       }
       if (req.body.stipend) {
-        filter['Monthly Stipend'] = { $gte: parseInt(req.body.stipend) };
+        filter['Monthly Stipend'] = { $eq: parseInt(req.body.stipend) };
       }
       if (req.body.branch) {
         filter.Branch = req.body.branch;

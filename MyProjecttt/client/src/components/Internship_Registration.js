@@ -11,7 +11,7 @@ function InternshipRegistration() {
     'Roll Number':'',
     Branch: '',
     Section: '',
-    'Mobile Number': '',
+    'Mobile Number':'',
     MailId: '',
     'Internship Offered Company Name': '',
     'Internship Offered Company Address': '',
@@ -28,16 +28,31 @@ function InternshipRegistration() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: value
-    });
+
+    // Convert 'Monthly Stipend' to a number if it is the field being updated
+    if (id === 'Monthly Stipend') {
+      setFormData({
+        ...formData,
+        [id]: Number(value)
+      });
+    } 
+    else if (id === 'Mobile Number') {
+      setFormData({
+        ...formData,
+        [id]: Number(value)
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [id]: value
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.Timestamp = new Date().toISOString(); // Add timestamp
-
+    console.log(formData)
     try {
       // Send data to the backend
       const response = await axios.post('http://localhost:4000/student_api/add-internship', formData);

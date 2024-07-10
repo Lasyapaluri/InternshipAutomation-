@@ -94,6 +94,9 @@ studentApp.post('/add-internship', expressAsyncHandler(async (req, res) => {
 studentApp.post('/add-internship', expressAsyncHandler(async (req, res) => {
     let internship = req.body;
 
+    // Convert Monthly Stipend to a number
+    internship['Monthly Stipend'] = Number(internship['Monthly Stipend']);
+    console.log(internship)
     // Check for existing internship with the same roll number, company, start date, and end date
     const existingInternship = await interncollection.findOne({
         'Roll Number': internship.RollNumber,
@@ -109,5 +112,6 @@ studentApp.post('/add-internship', expressAsyncHandler(async (req, res) => {
         res.send({ message: "Internship added successfully" });
     }
 }));
+
 
 module.exports=studentApp

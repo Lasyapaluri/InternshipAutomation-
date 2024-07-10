@@ -99,7 +99,7 @@ function FacultyDashboard() {
               <label className="form-label">Year:</label>
               <select
                 name="year"
-                value={filter.year}
+                value={filter['Start Date']}
                 onChange={handleFilterChange}
                 className="form-select"
               >
@@ -162,7 +162,7 @@ function FacultyDashboard() {
                   <td>{internship['Internship Offered Company Name']}</td>
                   <td>{internship['Monthly Stipend']}</td>
                   <td>{internship.Branch}</td>
-                  <td>{internship.Year}</td>
+                  <td>{internship['Starting Date']}</td>
                   <td>{internship.Section}</td>
                   <td>{internship['Internship Offered Company Address']}</td>
                 </tr>
