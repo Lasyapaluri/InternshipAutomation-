@@ -11,6 +11,7 @@ import InternshipRegistration from './components/Internship_Registration';
 import Faculty_Reg from './components/Faculty_Reg';
 import Faculty_login from './components/Faculty_login';
 import Faculty_Dashboard from './components/Faculty_Dashboard';
+import { PreviousInternship } from './components/PreviousInternship';
 
 function App() {
   let router=createBrowserRouter(
@@ -57,6 +58,10 @@ function App() {
           {
             path:'/Faculty_Dashboard',
             element:<Faculty_Dashboard/>
+          },
+          {
+            path:'/PreviousInternship',
+            element:<PreviousInternship/>
           }
         ]
       }

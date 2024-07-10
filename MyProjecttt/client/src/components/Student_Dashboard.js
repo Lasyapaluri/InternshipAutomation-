@@ -14,7 +14,7 @@ function Student_Dashboard() {
           </Link>
         </div>
         <div className="col-md-6 mb-4">
-          <Link to="/previous-information">
+          <Link to="/PreviousInternship">
             <button className="btn btn-info btn-lg w-100">
               View Previous Information
             </button>
