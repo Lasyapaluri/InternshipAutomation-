@@ -64,4 +64,4 @@ function Student_login() {
   );
 }
 
-export default StudentLogin;
+export default Student_login;
