@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Student_login() {
+function StudentLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [err, setError] = useState('');
@@ -19,6 +19,8 @@ function Student_login() {
 
       if (res.data.message === "login successful") {
         console.log("Login successful");
+        // Store the token in local storage
+        localStorage.setItem('token', res.data.token);
         navigate('/Student_Dashboard');
       } else {
         setError(res.data.message);
@@ -59,4 +61,4 @@ function Student_login() {
   );
 }
 
-export default Student_login;
+export default StudentLogin;

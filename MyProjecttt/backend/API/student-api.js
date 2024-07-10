@@ -7,7 +7,7 @@ studentApp.use((req,res,next)=>{
 
     mycollection=req.app.get('mycollection')
     studentcollection=req.app.get('studentcollection')    
-    
+    interncollection=req.app.get('interncollection')
     next()  
 })
 
@@ -47,4 +47,24 @@ studentApp.post('/login', expressAsyncHandler(async (req, res) => {
         }
     }
 }));
+
+studentApp.post('/add-internship', expressAsyncHandler(async (req, res) => {
+    let internship = req.body;
+
+    // Check for existing internship with the same roll number, company, start date, and end date
+    const existingInternship = await interncollection.findOne({
+        'Roll Number': internship.RollNumber,
+        'Internship Offered Company Name': internship['Internship Offered Company Name'],
+        'Starting Date': internship.StartingDate,
+        'Ending Date': internship.EndingDate
+    });
+
+    if (existingInternship != null) {
+        res.send({ message: "Internship already exists for this student in the specified company during the given period" });
+    } else {
+        await interncollection.insertOne(internship);
+        res.send({ message: "Internship added successfully" });
+    }
+}));
+
 module.exports=studentApp

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Faculty_login() {
+function FacultyLogin() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -25,7 +25,8 @@ function Faculty_login() {
       console.log(res.data);
       if (res.data.message === 'login successful') {
         console.log("Login successful");
-        // Assuming navigation to Faculty dashboard upon successful login
+        // Store the token in local storage
+        localStorage.setItem('token', res.data.token);
         navigate('/Faculty_Dashboard');
       } else {
         setError(res.data.message);
@@ -56,19 +57,6 @@ function Faculty_login() {
                   className="form-control"
                 />
               </div>
-              {/* Assuming email field is removed if not needed */}
-              {/* <div className="mb-3">
-                <label htmlFor="email" className="form-label">Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="form-control"
-                />
-              </div> */}
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Password:</label>
                 <input
@@ -95,4 +83,4 @@ function Faculty_login() {
   );
 }
 
-export default Faculty_login;
+export default FacultyLogin;
