@@ -20,14 +20,14 @@ studentApp.post('/register',async(req,res)=>{
     console.log(std)
     if(newstudent!=null)
     {
-        res.send({message:"User Exsist"})
+        res.send({message:"User Exist"})
     }
     else{
         // hash password 
         const hashspass=await bcryptjs.hash(std.password,10)
         std.password=hashspass
         await studentcollection.insertOne(std)
-        res.send({message:"Studnet created"})
+        res.send({message:"Student created"})
     }
     
 })
