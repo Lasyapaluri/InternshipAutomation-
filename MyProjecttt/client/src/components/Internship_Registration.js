@@ -1,49 +1,74 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function InternshipRegistration() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: '',
-    rollNumber: '',
-    branch: '',
-    section: '',
-    mobileNumber: '',
-    mailId: '',
-    companyName: '',
-    companyAddress: '',
-    monthlyStipend: '',
-    duration: '',
-    startingDate: '',
-    endingDate: '',
-    hrName: '',
-    hrMail: '',
-    companyWebsite: '',
-    role: '',
-    offerLetter: ''
+    Timestamp: '',
+    Name: '',
+    'Roll Number':'',
+    Branch: '',
+    Section: '',
+    'Mobile Number':'',
+    MailId: '',
+    'Internship Offered Company Name': '',
+    'Internship Offered Company Address': '',
+    'Monthly Stipend': '',
+    Duration: '',
+    'Starting Date': '',
+    'Ending Date': '',
+    'Name of the HR or Lead': '',
+    'Mail Id of the HR or Lead': '',
+    'Website of the Internship Offered Company': '',
+    'Role of the Internship': '',
+    'Internship Offer Letter': ''
   });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: value
-    });
+
+    // Convert 'Monthly Stipend' to a number if it is the field being updated
+    if (id === 'Monthly Stipend') {
+      setFormData({
+        ...formData,
+        [id]: Number(value)
+      });
+    } 
+    else if (id === 'Mobile Number') {
+      setFormData({
+        ...formData,
+        [id]: Number(value)
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [id]: value
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can handle form submission, e.g., send data to backend, etc.
-    console.log(formData); // For demonstration, logging form data to console
+    formData.Timestamp = new Date().toISOString(); // Add timestamp
+    console.log(formData)
+    try {
+      // Send data to the backend
+      const response = await axios.post('http://localhost:4000/student_api/add-internship', formData);
 
-    // Show alert
-    alert('Successfully Registered');
-
-    // Navigate back to '/Student_Dashboard'
-    navigate('/Student_Dashboard');
+      // Handle response from backend
+      if (response.data.message === 'Internship added successfully') {
+        alert('Successfully Registered');
+        navigate('/Student_Dashboard');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error('There was an error submitting the form!', error);
+      alert('There was an error submitting the form.');
+    }
   };
-
 
   return (
     <div className="container mt-5">
@@ -54,76 +79,76 @@ function InternshipRegistration() {
               <h2 className="text-center mb-4">Internship Registration Form</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Name</label>
-                  <input type="text" className="form-control" id="name" value={formData.name} onChange={handleChange} placeholder="Enter your name" required />
+                  <label htmlFor="Name" className="form-label">Name</label>
+                  <input type="text" className="form-control" id="Name" value={formData.Name} onChange={handleChange} placeholder="Enter your name" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="rollNumber" className="form-label">Roll Number</label>
-                  <input type="text" className="form-control" id="rollNumber" value={formData.rollNumber} onChange={handleChange} placeholder="Enter roll number" required />
+                  <label htmlFor="RollNumber" className="form-label">Roll Number</label>
+                  <input type="text" className="form-control" id="Roll Number" value={formData['Roll Number']} onChange={handleChange} placeholder="Enter roll number" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="branch" className="form-label">Branch</label>
-                  <input type="text" className="form-control" id="branch" value={formData.branch} onChange={handleChange} placeholder="Enter branch" required />
+                  <label htmlFor="Branch" className="form-label">Branch</label>
+                  <input type="text" className="form-control" id="Branch" value={formData.Branch} onChange={handleChange} placeholder="Enter branch" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="section" className="form-label">Section</label>
-                  <input type="text" className="form-control" id="section" value={formData.section} onChange={handleChange} placeholder="Enter section" required />
+                  <label htmlFor="Section" className="form-label">Section</label>
+                  <input type="text" className="form-control" id="Section" value={formData.Section} onChange={handleChange} placeholder="Enter section" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mobileNumber" className="form-label">Mobile Number</label>
-                  <input type="text" className="form-control" id="mobileNumber" value={formData.mobileNumber} onChange={handleChange} placeholder="Enter mobile number" required />
+                  <label htmlFor="MobileNumber" className="form-label">Mobile Number</label>
+                  <input type="text" className="form-control" id="Mobile Number" value={formData['Mobile Number']} onChange={handleChange} placeholder="Enter mobile number" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mailId" className="form-label">Mail Id</label>
-                  <input type="email" className="form-control" id="mailId" value={formData.mailId} onChange={handleChange} placeholder="Enter email" required />
+                  <label htmlFor="MailId" className="form-label">Mail Id</label>
+                  <input type="email" className="form-control" id="MailId" value={formData.MailId} onChange={handleChange} placeholder="Enter email" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="companyName" className="form-label">Internship Company Name</label>
-                  <input type="text" className="form-control" id="companyName" value={formData.companyName} onChange={handleChange} placeholder="Enter company name" required />
+                  <label htmlFor="Internship Offered Company Name" className="form-label">Internship Offered Company Name</label>
+                  <input type="text" className="form-control" id="Internship Offered Company Name" value={formData['Internship Offered Company Name']} onChange={handleChange} placeholder="Enter company name" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="companyAddress" className="form-label">Company Address</label>
-                  <textarea className="form-control" id="companyAddress" value={formData.companyAddress} onChange={handleChange} rows="3" placeholder="Enter company address" required></textarea>
+                  <label htmlFor="Internship Offered Company Address" className="form-label">Internship Offered Company Address</label>
+                  <textarea className="form-control" id="Internship Offered Company Address" value={formData['Internship Offered Company Address']} onChange={handleChange} rows="3" placeholder="Enter company address" required></textarea>
                 </div>
                 <div className="row mb-3">
                   <div className="col">
-                    <label htmlFor="monthlyStipend" className="form-label">Monthly Stipend</label>
-                    <input type="text" className="form-control" id="monthlyStipend" value={formData.monthlyStipend} onChange={handleChange} placeholder="Enter stipend" required />
+                    <label htmlFor="MonthlyStipend" className="form-label">Monthly Stipend</label>
+                    <input type="text" className="form-control" id="Monthly Stipend" value={formData['Monthly Stipend']} onChange={handleChange} placeholder="Enter stipend" required />
                   </div>
                   <div className="col">
-                    <label htmlFor="duration" className="form-label">Duration</label>
-                    <input type="text" className="form-control" id="duration" value={formData.duration} onChange={handleChange} placeholder="Enter duration" required />
+                    <label htmlFor="Duration" className="form-label">Duration</label>
+                    <input type="text" className="form-control" id="Duration" value={formData.Duration} onChange={handleChange} placeholder="Enter duration" required />
                   </div>
                 </div>
                 <div className="row mb-3">
                   <div className="col">
-                    <label htmlFor="startingDate" className="form-label">Starting Date</label>
-                    <input type="text" className="form-control" id="startingDate" value={formData.startingDate} onChange={handleChange} placeholder="Enter starting date" required />
+                    <label htmlFor="StartingDate" className="form-label">Starting Date</label>
+                    <input type="date" className="form-control" id="Starting Date" value={formData['Starting Data']} onChange={handleChange} required />
                   </div>
                   <div className="col">
-                    <label htmlFor="endingDate" className="form-label">Ending Date</label>
-                    <input type="text" className="form-control" id="endingDate" value={formData.endingDate} onChange={handleChange} placeholder="Enter ending date" required />
+                    <label htmlFor="EndingDate" className="form-label">Ending Date</label>
+                    <input type="date" className="form-control" id="Ending Date" value={formData['Ending Date']} onChange={handleChange} required />
                   </div>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="hrName" className="form-label">HR Name</label>
-                  <input type="text" className="form-control" id="hrName" value={formData.hrName} onChange={handleChange} placeholder="Enter HR or Lead name" required />
+                  <label htmlFor="Name of the HR or Lead" className="form-label">Name of the HR or Lead</label>
+                  <input type="text" className="form-control" id="Name of the HR or Lead" value={formData['Name of the HR or Lead']} onChange={handleChange} placeholder="Enter HR or Lead name" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="hrMail" className="form-label">HR Mail Id</label>
-                  <input type="email" className="form-control" id="hrMail" value={formData.hrMail} onChange={handleChange} placeholder="Enter HR or Lead email" required />
+                  <label htmlFor="Mail Id of the HR or Lead" className="form-label">Mail Id of the HR or Lead</label>
+                  <input type="email" className="form-control" id="Mail Id of the HR or Lead" value={formData['Mail Id of the HR or Lead']} onChange={handleChange} placeholder="Enter HR or Lead email" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="companyWebsite" className="form-label">Company Website</label>
-                  <input type="url" className="form-control" id="companyWebsite" value={formData.companyWebsite} onChange={handleChange} placeholder="Enter company website" required />
+                  <label htmlFor="Website of the Internship Offered Company" className="form-label">Website of the Internship Offered Company</label>
+                  <input type="url" className="form-control" id="Website of the Internship Offered Company" value={formData['Website of the Internship Offered Company']} onChange={handleChange} placeholder="Enter company website" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="role" className="form-label">Internship Role</label>
-                  <input type="text" className="form-control" id="role" value={formData.role} onChange={handleChange} placeholder="Enter internship role" required />
+                  <label htmlFor="Role of the Internship" className="form-label">Role of the Internship</label>
+                  <input type="text" className="form-control" id="Role of the Internship" value={formData['Role of the Internship']} onChange={handleChange} placeholder="Enter internship role" required />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="offerLetter" className="form-label">Offer Letter URL</label>
-                  <input type="url" className="form-control" id="offerLetter" value={formData.offerLetter} onChange={handleChange} placeholder="Enter offer letter URL" required />
+                  <label htmlFor="Internship Offer Letter" className="form-label">Internship Offer Letter URL</label>
+                  <input type="url" className="form-control" id="Internship Offer Letter" value={formData['Internship Offer Letter']} onChange={handleChange} placeholder="Enter offer letter URL" required />
                 </div>
                 <div className="text-center">
                   <button type="submit" className="btn btn-primary">Submit</button>

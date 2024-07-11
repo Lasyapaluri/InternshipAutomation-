@@ -33,7 +33,7 @@ function Navigation() {
             <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
           ) : (
             // Login button when logged out
-            <Link to="/Student_Login" className='btn btn-primary'>Login</Link>
+            <Link to="/" className='btn btn-primary'>Login</Link>
           )}
         </div>
       </div>
